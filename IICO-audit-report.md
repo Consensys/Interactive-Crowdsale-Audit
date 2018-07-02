@@ -718,7 +718,7 @@ The raw output of the Solhint vulnerability scan can be found [here](./tools/sol
 <img height="120px" align="right" src="static-assets/odyssey.png"/>
 
 Odyssey is an audit tool that acts as the glue between developers, auditors and tools. It leverages Github as the platform for building software and aligns to the approach that quality needs to be addressed as early as possible in the development life cycle and small iterative security activities spread out through development help to produce a more secure smart contract system.
-In its current version Odyssey helps to better communicate audit issues to development teams and help to successfully close them.
+In its current version Odyssey helps to better communicate audit issues to development teams and to successfully close them.
 
 ## 6 Test Coverage Measurement
 
