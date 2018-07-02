@@ -1,0 +1,2027 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/InteractiveCrowdsaleLib.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> InteractiveCrowdsaleLib.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">95.95% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>166/173</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">76.47% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>78/102</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>16/16</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.39% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>187/194</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">1450×</span>
+<span class="cline-any cline-yes">1450×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">58×</span>
+<span class="cline-any cline-yes">58×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">58×</span>
+<span class="cline-any cline-yes">58×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">58×</span>
+<span class="cline-any cline-yes">58×</span>
+<span class="cline-any cline-yes">58×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">58×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">76×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">75×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">74×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">74×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">60×</span>
+<span class="cline-any cline-yes">60×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40×</span>
+<span class="cline-any cline-yes">40×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55×</span>
+<span class="cline-any cline-yes">55×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">45×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">57×</span>
+<span class="cline-any cline-yes">57×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">57×</span>
+<span class="cline-any cline-yes">57×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">57×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">pragma solidity ^0.4.18;
+&nbsp;
+/**
+ * @title InteractiveCrowdsaleLib
+ * @author Modular, Inc
+ *
+ * version 1.0.0
+ * Copyright (c) 2017 Modular, Inc
+ * The MIT License (MIT)
+ *
+ * The InteractiveCrowdsale Library provides functionality to create a crowdsale
+ * based on the white paper initially proposed by Jason Teutsch and Vitalik
+ * Buterin. See https://people.cs.uchicago.edu/~teutsch/papers/ico.pdf for
+ * further information.
+ *
+ * This library was developed in a collaborative effort among many organizations
+ * including TrueBit, Modular, and Consensys.
+ * For further information: truebit.io, modular.network,
+ * consensys.net
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+&nbsp;
+import "./BasicMathLib.sol";
+import "./TokenLib.sol";
+import "./CrowdsaleToken.sol";
+import "./CrowdsaleLib.sol";
+import "./LinkedListLib.sol";
+&nbsp;
+library InteractiveCrowdsaleLib {
+  using BasicMathLib for uint256;
+  using TokenLib for TokenLib.TokenStorage;
+  using LinkedListLib for LinkedListLib.LinkedList;
+  using CrowdsaleLib for CrowdsaleLib.CrowdsaleStorage;
+&nbsp;
+  // Node constants for use in the linked list
+  uint256 constant NULL = 0;
+  uint256 constant HEAD = 0;
+  bool constant PREV = false;
+  bool constant NEXT = true;
+&nbsp;
+  struct InteractiveCrowdsaleStorage {
+&nbsp;
+    CrowdsaleLib.CrowdsaleStorage base; // base storage from CrowdsaleLib
+&nbsp;
+    // List of personal valuations, sorted from smallest to largest (from LinkedListLib)
+    LinkedListLib.LinkedList valuationsList;
+&nbsp;
+    // Info holder for token creation
+    TokenLib.TokenStorage tokenInfo;
+&nbsp;
+    uint256 endWithdrawalTime;   // time when manual withdrawals are no longer allowed
+&nbsp;
+    // current total valuation of the sale
+    // actual amount of ETH committed, taking into account partial purchases
+    uint256 totalValuation;
+&nbsp;
+    // amount of value committed at this valuation, cannot rely on owner balance
+    // due to fluctations in commitment calculations needed after owner withdraws
+    // in other words, the total amount of ETH committed, including total bids
+    // that will eventually get partial purchases
+    uint256 valueCommitted;
+&nbsp;
+    // the bucket that sits either at or just below current total valuation.
+    // determines where the cutoff point is for bids in the sale
+    uint256 currentBucket;
+&nbsp;
+    // the fraction of each minimal valuation bidder's ether refund, 'q' is from the paper
+    // and is calculated when finalizing the sale
+    uint256 q;
+&nbsp;
+    // minimim amount that the sale needs to make to be successfull
+    uint256 minimumRaise;
+&nbsp;
+    // percentage of total tokens being sold in this sale
+    uint8 percentBeingSold;
+&nbsp;
+    // the bonus amount for early bidders.  This is a percentage of the base token
+    // price that gets added on the the base token price used in getCurrentBonus()
+    uint256 priceBonusPercent;
+&nbsp;
+    // Indicates that the owner has finalized the sale and withdrawn Ether
+    bool isFinalized;
+&nbsp;
+    // Set to true if the sale is canceled
+    bool isCanceled;
+&nbsp;
+    // shows the price that the address purchased tokens at
+    mapping (address =&gt; uint256) pricePurchasedAt;
+&nbsp;
+    // the sums of bids at each valuation.  Used to calculate the current bucket for the valuation pointer
+    mapping (uint256 =&gt; uint256) valuationSums;
+&nbsp;
+    // the number of active bids at a certain valuation cap
+    mapping (uint256 =&gt; uint256) numBidsAtValuation;
+&nbsp;
+    // the valuation cap that each address has submitted
+    mapping (address =&gt; uint256) personalCaps;
+&nbsp;
+    // shows if an address has done a manual withdrawal. manual withdrawals are only allowed once
+    mapping (address =&gt; bool) hasManuallyWithdrawn;
+  }
+&nbsp;
+  // Indicates when a bidder submits a bid to the crowdsale
+  event LogBidAccepted(address indexed bidder, uint256 amount, uint256 personalValuation);
+&nbsp;
+  // Indicates when a bidder manually withdraws their bid from the crowdsale
+  event LogBidWithdrawn(address indexed bidder, uint256 amount, uint256 personalValuation);
+&nbsp;
+  // Indicates when a bid is removed by the automated bid removal process
+  event LogBidRemoved(address indexed bidder, uint256 personalValuation);
+&nbsp;
+  // Generic Error Msg Event
+  event LogErrorMsg(uint256 amount, string Msg);
+&nbsp;
+  // Indicates when the price of the token changes
+  event LogTokenPriceChange(uint256 amount, string Msg);
+&nbsp;
+  // Logs the current bucket that the valuation points to, the total valuation of
+  // the sale, and the amount of ETH committed, including total bids that will eventually get partial purchases
+  event BucketAndValuationAndCommitted(uint256 bucket, uint256 valuation, uint256 committed);
+&nbsp;
+  /// @dev Called by a crowdsale contract upon creation.
+  /// @param self Stored crowdsale from crowdsale contract
+  /// @param _owner Address of crowdsale owner
+  /// @param _saleData Array of 3 item arrays such that, in each 3 element
+  /// array index-0 is a timestamp, index-1 is price in tokens/ETH
+  /// index-2 is address purchase cap at that time, 0 if no address cap
+  /// @param _priceBonusPercent the bonus amount for early bidders
+  /// @param _minimumRaise minimim amount that the sale needs to make to be successfull
+  /// @param _endWithdrawalTime timestamp that indicates that manual withdrawals are no longer allowed
+  /// @param _endTime Timestamp of sale end time
+  /// @param _percentBeingSold percentage of total tokens being sold in the sale
+  /// @param _tokenName name of the token being sold. ex: "Jason Network Token"
+  /// @param _tokenSymbol symbol of the token. ex: "JNT"
+  /// @param _tokenDecimals number of decimals in the token
+  /// @param _allowMinting whether or not to allow minting of the token after the sale
+  function init(InteractiveCrowdsaleStorage storage self,
+                address _owner,
+                uint256[] _saleData,
+                uint256 _priceBonusPercent,
+                uint256 _minimumRaise,
+                uint256 _endWithdrawalTime,
+                uint256 _endTime,
+                uint8 _percentBeingSold,
+                string _tokenName,
+                string _tokenSymbol,
+                uint8 _tokenDecimals,
+                bool _allowMinting) public
+  {
+    self.base.init(_owner,
+                _saleData,
+                _endTime,
+                0, // no token burning for iico
+                CrowdsaleToken(0)); // no tokens created prior to iico
+&nbsp;
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(_endWithdrawalTime &lt; _endTime);
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(_endWithdrawalTime &gt; _saleData[0]);
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(_minimumRaise &gt; 0);
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(_percentBeingSold &gt; 0);
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(_percentBeingSold &lt;= 100);
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(_priceBonusPercent &gt; 0);
+&nbsp;
+    self.minimumRaise = _minimumRaise;
+    self.endWithdrawalTime = _endWithdrawalTime;
+    self.percentBeingSold = _percentBeingSold;
+    self.priceBonusPercent = _priceBonusPercent;
+&nbsp;
+    self.tokenInfo.name = _tokenName;
+    self.tokenInfo.symbol = _tokenSymbol;
+    self.tokenInfo.decimals = _tokenDecimals;
+    self.tokenInfo.stillMinting = _allowMinting;
+  }
+&nbsp;
+  /// @dev calculates the number of digits in a given number
+  /// @param _number the number for which we're caluclating digits
+  /// @return _digits the number of digits in _number
+  function numDigits(uint256 _number) public pure returns (uint256) {
+    uint256 _digits = 0;
+    while (_number != 0) {
+      _number /= 10;
+      _digits++;
+    }
+    return _digits;
+  }
+&nbsp;
+  /// @dev calculates the number of tokens purchased based on the amount of wei
+  ///      spent and the price of tokens
+  /// @param _amount amound of wei that the buyer sent
+  /// @param _price price of tokens in the sale, in tokens/ETH
+  /// @return uint256 numTokens the number of tokens purchased
+  /// @return remainder  any remaining wei leftover from integer division
+  function calculateTokenPurchase(uint256 _amount,
+                                  uint256 _price)
+                                  internal
+                                  pure
+                                  returns (uint256,uint256)
+  {
+    uint256 remainder = 0; //temp calc holder for division remainder for leftover wei
+&nbsp;
+    bool err;
+    uint256 numTokens;
+    uint256 weiTokens; //temp calc holder
+&nbsp;
+    // Find the number of tokens as a function in wei
+    (err,weiTokens) = _amount.times(_price);
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(!err);
+&nbsp;
+    numTokens = weiTokens / 1000000000000000000;
+    remainder = weiTokens % 1000000000000000000;
+    remainder = remainder / _price;
+&nbsp;
+    return (numTokens,remainder);
+  }
+&nbsp;
+  /// @dev Called when an address wants to submit a bid to the sale
+  /// @param self Stored crowdsale from crowdsale contract
+  /// @return currentBonus percentage of the bonus that is applied for the purchase
+  function getCurrentBonus(InteractiveCrowdsaleStorage storage self) internal view returns (uint256){
+    // can't underflow becuase endWithdrawalTime &gt; startTime
+    uint256 bonusTime = self.endWithdrawalTime - self.base.startTime;
+    // can't underflow because now &gt; startTime
+    uint256 elapsed = now - self.base.startTime;
+    uint256 percentElapsed = (elapsed * 100)/bonusTime;
+&nbsp;
+    bool err;
+    uint256 currentBonus;
+    (err,currentBonus) = self.priceBonusPercent.minus(((percentElapsed * self.priceBonusPercent)/100));
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(!err);
+&nbsp;
+    return currentBonus;
+  }
+&nbsp;
+  /// @dev Called when an address wants to submit bid to the sale
+  /// @param self Stored crowdsale from crowdsale contract
+  /// @param _amount amound of wei that the buyer is sending
+  /// @param _personalCap the total crowdsale valuation (wei) that the bidder is comfortable with
+  /// @param _valuePredict prediction of where the valuation will go in the linked list. saves on searching time
+  /// @return true on succesful bid
+  function submitBid(InteractiveCrowdsaleStorage storage self,
+                      uint256 _amount,
+                      uint256 _personalCap,
+                      uint256 _valuePredict) public returns (bool)
+  {
+    require(msg.sender != self.base.owner);
+    require(self.base.validPurchase());
+    // bidder can't have already bid
+    require((self.personalCaps[msg.sender] == 0) &amp;&amp; (self.base.hasContributed[msg.sender] == 0));
+&nbsp;
+    uint256 _bonusPercent;
+    // token purchase bonus only applies before the withdrawal lock
+    if (now &lt; self.endWithdrawalTime) {
+      <span class="missing-if-branch" title="else path not taken" >E</span>require(_personalCap &gt; _amount);
+      _bonusPercent = getCurrentBonus(self);
+    } else {
+      // The personal valuation submitted must be greater than the current
+      // valuation plus the bid if after the withdrawal lock.
+      <span class="missing-if-branch" title="if path not taken" >I</span>require(_personalCap &gt;= self.totalValuation + _amount);
+    }
+&nbsp;
+    // personal valuation and minimum should be set to the proper granularity,
+    // only three most significant values can be non-zero. reduces the number of possible
+    // valuation buckets in the linked list
+    uint256 digits = numDigits(_personalCap);
+    <span class="missing-if-branch" title="else path not taken" >E</span>if(digits &gt; 3) {
+      <span class="missing-if-branch" title="else path not taken" >E</span>require((_personalCap % (10**(digits - 3))) == 0);
+    }
+&nbsp;
+    // add the bid to the sorted valuations list
+    // duplicate personal valuation caps share a spot in the linked list
+    uint256 _listSpot;
+    if(!self.valuationsList.nodeExists(_personalCap)){
+        _listSpot = self.valuationsList.getSortedSpot(_valuePredict,_personalCap,NEXT);
+        self.valuationsList.insert(_listSpot,_personalCap,PREV);
+    }
+&nbsp;
+    // add the bid to the address =&gt; cap mapping
+    self.personalCaps[msg.sender] = _personalCap;
+&nbsp;
+    // add the bid to the sum of bids at this valuation. Needed for calculating correct valuation pointer
+    self.valuationSums[_personalCap] += _amount;
+    self.numBidsAtValuation[_personalCap] += 1;
+&nbsp;
+    // add the bid to bidder's contribution amount
+    self.base.hasContributed[msg.sender] += _amount;
+&nbsp;
+    // temp variables for calculation
+    uint256 _proposedCommit;
+    uint256 _currentBucket;
+    bool loop;
+    bool exists;
+&nbsp;
+    // we only affect the pointer if we are coming in above it
+    if(_personalCap &gt; self.currentBucket){
+&nbsp;
+      // if our valuation is sitting at the current bucket then we are using
+      // commitments right at their cap
+      if (self.totalValuation == self.currentBucket) {
+        // we are going to drop those commitments to see if we are going to be
+        // greater than the current bucket without them
+        _proposedCommit = (self.valueCommitted - self.valuationSums[self.currentBucket]) + _amount;
+        if(_proposedCommit &gt; self.currentBucket){ loop = true; }
+      } else {
+        // else we're sitting in between buckets and have already dropped the
+        // previous commitments
+        _proposedCommit = self.totalValuation + _amount;
+        loop = true;
+      }
+&nbsp;
+      if(loop){
+        // if we're going to loop we move to the next bucket
+        (exists,_currentBucket) = self.valuationsList.getAdjacent(self.currentBucket, NEXT);
+&nbsp;
+        while(_proposedCommit &gt;= _currentBucket){
+          // while we are proposed higher than the next bucket we drop commitments
+          // and iterate to the next
+          _proposedCommit = _proposedCommit - self.valuationSums[_currentBucket];
+          (exists,_currentBucket) = self.valuationsList.getAdjacent(_currentBucket, NEXT);
+        }
+        // once we've reached a bucket too high we move back to the last bucket and set it
+        (exists, _currentBucket) = self.valuationsList.getAdjacent(_currentBucket, PREV);
+        self.currentBucket = _currentBucket;
+      } else {
+        // else we're staying at the current bucket
+        _currentBucket = self.currentBucket;
+      }
+      // if our proposed commitment is less than or equal to the bucket
+      if(_proposedCommit &lt;= _currentBucket){
+        // we add the commitments in that bucket
+        _proposedCommit += self.valuationSums[_currentBucket];
+        // and our value is capped at that bucket
+        self.totalValuation = _currentBucket;
+      } else {
+        // else our total value is in between buckets and it equals the total commitements
+        self.totalValuation = _proposedCommit;
+      }
+&nbsp;
+      self.valueCommitted = _proposedCommit;
+    } else if(_personalCap == self.totalValuation){
+      self.valueCommitted += _amount;
+    }
+&nbsp;
+    self.pricePurchasedAt[msg.sender] = (self.base.tokensPerEth * (100 + _bonusPercent))/100;
+    LogBidAccepted(msg.sender, _amount, _personalCap);
+    BucketAndValuationAndCommitted(self.currentBucket, self.totalValuation, self.valueCommitted);
+    return true;
+  }
+&nbsp;
+&nbsp;
+  /// @dev Called when an address wants to manually withdraw their bid from the
+  ///      sale. puts their wei in the LeftoverWei mapping
+  /// @param self Stored crowdsale from crowdsale contract
+  /// @return true on succesful
+  function withdrawBid(InteractiveCrowdsaleStorage storage self) public returns (bool) {
+    // The sender has to have already bid on the sale
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(self.personalCaps[msg.sender] &gt; 0);
+&nbsp;
+    uint256 refundWei;
+    // cannot withdraw after compulsory withdraw period is over unless the bid's
+    // valuation is below the cutoff
+    if (now &gt;= self.endWithdrawalTime) {
+      require(self.personalCaps[msg.sender] &lt; self.totalValuation);
+&nbsp;
+      // full refund because their bid no longer affects the total sale valuation
+      refundWei = self.base.hasContributed[msg.sender];
+&nbsp;
+    } else {
+      require(!self.hasManuallyWithdrawn[msg.sender]);  // manual withdrawals are only allowed once
+      /***********************************************************************
+      The following lines were commented out due to stack depth, but they represent
+      the variables and calculations from the paper. The actual code is the same
+      thing spelled out using current variables.  See section 4 of the white paper for formula used
+      ************************************************************************/
+      //uint256 t = self.endWithdrawalTime - self.base.startTime;
+      //uint256 s = now - self.base.startTime;
+      //uint256 pa = self.pricePurchasedAt[msg.sender];
+      //uint256 pu = self.base.tokensPerEth;
+      //uint256 multiplierPercent =  (100*(t - s))/t;
+      //self.pricePurchasedAt = pa-((pa-pu)/3)
+&nbsp;
+      uint256 multiplierPercent = (100 * (self.endWithdrawalTime - now)) /
+                                  (self.endWithdrawalTime - self.base.startTime);
+      refundWei = (multiplierPercent * self.base.hasContributed[msg.sender]) / 100;
+&nbsp;
+      self.valuationSums[self.personalCaps[msg.sender]] -= refundWei;
+      self.numBidsAtValuation[self.personalCaps[msg.sender]] -= 1;
+&nbsp;
+      self.pricePurchasedAt[msg.sender] = self.pricePurchasedAt[msg.sender] -
+                                          ((self.pricePurchasedAt[msg.sender] - self.base.tokensPerEth) / 3);
+&nbsp;
+      self.hasManuallyWithdrawn[msg.sender] = true;
+&nbsp;
+    }
+&nbsp;
+    // Put the sender's contributed wei into the leftoverWei mapping for later withdrawal
+    self.base.leftoverWei[msg.sender] += refundWei;
+&nbsp;
+    // subtract the bidder's refund from its total contribution
+    self.base.hasContributed[msg.sender] -= refundWei;
+&nbsp;
+&nbsp;
+    uint256 _proposedCommit;
+    uint256 _proposedValue;
+    uint256 _currentBucket;
+    bool loop;
+    bool exists;
+&nbsp;
+    // bidder's withdrawal only affects the pointer if the personal cap is at or
+    // above the current valuation
+    if(self.personalCaps[msg.sender] &gt;= self.totalValuation){
+&nbsp;
+      // first we remove the refundWei from the committed value
+      _proposedCommit = self.valueCommitted - refundWei;
+&nbsp;
+      // if we've dropped below the current bucket
+      if(_proposedCommit &lt;= self.currentBucket){
+        // and current valuation is above the bucket
+        if(self.totalValuation &gt; self.currentBucket){
+          _proposedCommit += self.valuationSums[self.currentBucket];
+        }
+&nbsp;
+        if(_proposedCommit &gt;= self.currentBucket){
+          _proposedValue = self.currentBucket;
+        } else {
+          // if we are still below the current bucket then we need to iterate
+          loop = true;
+        }
+      } else {
+        if(self.totalValuation == self.currentBucket){
+          _proposedValue = self.totalValuation;
+        } else {
+          _proposedValue = _proposedCommit;
+        }
+      }
+&nbsp;
+      if(loop){
+        // if we're going to loop we move to the previous bucket
+        (exists,_currentBucket) = self.valuationsList.getAdjacent(self.currentBucket, PREV);
+        while(_proposedCommit &lt;= _currentBucket){
+          // while we are proposed lower than the previous bucket we add commitments
+          _proposedCommit += self.valuationSums[_currentBucket];
+          // and iterate to the previous
+          <span class="missing-if-branch" title="else path not taken" >E</span>if(_proposedCommit &gt;= _currentBucket){
+            _proposedValue = _currentBucket;
+          } else {
+<span class="cstat-no" title="statement not covered" >            (exists,_currentBucket) = self.valuationsList.getAdjacent(_currentBucket, PREV)</span>;
+          }
+        }
+&nbsp;
+        if(_proposedValue == 0) { _proposedValue = _proposedCommit; }
+&nbsp;
+        self.currentBucket = _currentBucket;
+      }
+&nbsp;
+      self.totalValuation = _proposedValue;
+      self.valueCommitted = _proposedCommit;
+    }
+&nbsp;
+    LogBidWithdrawn(msg.sender, refundWei, self.personalCaps[msg.sender]);
+    BucketAndValuationAndCommitted(self.currentBucket, self.totalValuation, self.valueCommitted);
+    return true;
+  }
+&nbsp;
+  /// @dev This should be called once the sale is over to commit all bids into
+  ///      the owner's bucket.
+  /// @param self stored crowdsale from crowdsale contract
+  function finalizeSale(InteractiveCrowdsaleStorage storage self) public returns (bool) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(now &gt;= self.base.endTime);
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(!self.isFinalized); // can only be called once
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(setCanceled(self));
+&nbsp;
+    self.isFinalized = true;
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(launchToken(self));
+    // may need to be computed due to EVM rounding errors
+    uint256 computedValue;
+&nbsp;
+    if(!self.isCanceled){
+      <span class="missing-if-branch" title="if path not taken" >I</span>if(self.totalValuation == self.currentBucket){
+        // calculate the fraction of each minimal valuation bidders ether and tokens to refund
+<span class="cstat-no" title="statement not covered" >        self.q = (100*(self.valueCommitted - self.totalValuation)/(self.valuationSums[self.totalValuation])) + 1</span>;
+<span class="cstat-no" title="statement not covered" >        computedValue = self.valueCommitted - self.valuationSums[self.totalValuation]</span>;
+<span class="cstat-no" title="statement not covered" >        computedValue += (self.q * self.valuationSums[self.totalValuation])/100</span>;
+      } else {
+        // no computation necessary
+        computedValue = self.totalValuation;
+      }
+      self.base.ownerBalance = computedValue;  // sets ETH raised in the sale to be ready for withdrawal
+    }
+  }
+&nbsp;
+  /// @dev Mints the token being sold by taking the percentage of the token supply
+  ///      being sold in this sale along with the valuation, derives all necessary
+  ///      values and then transfers owner tokens to the owner.
+  /// @param self Stored crowdsale from crowdsale contract
+  function launchToken(InteractiveCrowdsaleStorage storage self) internal returns (bool) {
+    // total valuation of all the tokens not including the bonus
+    uint256 _fullValue = (self.totalValuation*100)/uint256(self.percentBeingSold);
+    // total valuation of bonus tokens
+    uint256 _bonusValue = ((self.totalValuation * (100 + self.priceBonusPercent))/100) - self.totalValuation;
+    // total supply of all tokens not including the bonus
+    uint256 _supply = (_fullValue * self.base.tokensPerEth)/1000000000000000000;
+    // total number of bonus tokens
+    uint256 _bonusTokens = (_bonusValue * self.base.tokensPerEth)/1000000000000000000;
+    // tokens allocated to the owner of the sale
+    uint256 _ownerTokens = _supply - ((_supply * uint256(self.percentBeingSold))/100);
+    // total supply of tokens not including the bonus tokens
+    uint256 _totalSupply = _supply + _bonusTokens;
+&nbsp;
+    // deploy new token contract with total number of tokens
+    self.base.token = new CrowdsaleToken(address(this),
+                                         self.tokenInfo.name,
+                                         self.tokenInfo.symbol,
+                                         self.tokenInfo.decimals,
+                                         _totalSupply,
+                                         self.tokenInfo.stillMinting);
+&nbsp;
+    // if the sale got canceled, then all the tokens go to the owner and bonus tokens are burned
+    if(!self.isCanceled){
+      self.base.token.transfer(self.base.owner, _ownerTokens);
+    } else {
+      self.base.token.transfer(self.base.owner, _supply);
+      self.base.token.burnToken(_bonusTokens);
+    }
+    // the owner of the crowdsale becomes the new owner of the token contract
+    self.base.token.changeOwner(self.base.owner);
+    self.base.startingTokenBalance = _supply - _ownerTokens;
+&nbsp;
+    return true;
+  }
+&nbsp;
+  /// @dev returns a boolean indicating if the sale is canceled.
+  ///      This can either be if the minimum raise hasn't been met
+  ///      or if it is 30 days after the sale and the owner hasn't finalized the sale.
+  /// @return bool canceled indicating if the sale is canceled or not
+  function setCanceled(InteractiveCrowdsaleStorage storage self) internal returns(bool){
+    bool canceled = (self.totalValuation &lt; self.minimumRaise) ||
+                    ((now &gt; (self.base.endTime + 30 days)) &amp;&amp; !self.isFinalized);
+&nbsp;
+    if(canceled) {self.isCanceled = true;}
+&nbsp;
+    return true;
+  }
+&nbsp;
+  /// @dev If the address' personal cap is below the pointer, refund them all their ETH.
+  ///      if it is above the pointer, calculate tokens purchased and refund leftoever ETH
+  /// @param self Stored crowdsale from crowdsale contract
+  /// @return bool success if the contract runs successfully
+  function retreiveFinalResult(InteractiveCrowdsaleStorage storage self) public returns (bool) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(now &gt; self.base.endTime);
+    <span class="missing-if-branch" title="else path not taken" >E</span>require(self.personalCaps[msg.sender] &gt; 0);
+&nbsp;
+    uint256 numTokens;
+    uint256 remainder;
+&nbsp;
+    if(!self.isFinalized){
+      <span class="missing-if-branch" title="else path not taken" >E</span>require(setCanceled(self));
+      <span class="missing-if-branch" title="if path not taken" >I</span>require(self.isCanceled);
+    }
+&nbsp;
+    if (self.isCanceled) {
+      // if the sale was canceled, everyone gets a full refund
+      self.base.leftoverWei[msg.sender] += self.base.hasContributed[msg.sender];
+      self.base.hasContributed[msg.sender] = 0;
+      LogErrorMsg(self.totalValuation, "Sale is canceled, all bids have been refunded!");
+      return true;
+    }
+&nbsp;
+    if (self.personalCaps[msg.sender] &lt; self.totalValuation) {
+&nbsp;
+      // full refund if personal cap is less than total valuation
+      self.base.leftoverWei[msg.sender] += self.base.hasContributed[msg.sender];
+&nbsp;
+      // set hasContributed to 0 to prevent participant from calling this over and over
+      self.base.hasContributed[msg.sender] = 0;
+&nbsp;
+      return self.base.withdrawLeftoverWei();
+&nbsp;
+    } else <span class="missing-if-branch" title="if path not taken" >I</span>if (self.personalCaps[msg.sender] == self.totalValuation) {
+&nbsp;
+      // calculate the portion that this address has to take out of their bid
+<span class="cstat-no" title="statement not covered" >      uint256 refundAmount = (self.q*self.base.hasContributed[msg.sender])/100</span>;
+&nbsp;
+      // refund that amount of wei to the address
+<span class="cstat-no" title="statement not covered" >      self.base.leftoverWei[msg.sender] += refundAmount</span>;
+&nbsp;
+      // subtract that amount the address' contribution
+<span class="cstat-no" title="statement not covered" >      self.base.hasContributed[msg.sender] -= refundAmount</span>;
+    }
+&nbsp;
+    LogErrorMsg(self.base.hasContributed[msg.sender],"contribution");
+    LogErrorMsg(self.pricePurchasedAt[msg.sender],"price");
+    LogErrorMsg(self.q,"percentage");
+    // calculate the number of tokens that the bidder purchased
+    (numTokens, remainder) = calculateTokenPurchase(self.base.hasContributed[msg.sender],
+                                                    self.pricePurchasedAt[msg.sender]);
+&nbsp;
+    // add tokens to the bidders purchase.  can't overflow because it will be under the cap
+    self.base.withdrawTokensMap[msg.sender] += numTokens;
+    self.valueCommitted = self.valueCommitted - remainder;
+    self.base.leftoverWei[msg.sender] += remainder;
+&nbsp;
+    // burn any extra bonus tokens
+    uint256 _fullBonus;
+    uint256 _fullBonusPrice = (self.base.tokensPerEth*(100 + self.priceBonusPercent))/100;
+    (_fullBonus, remainder) = calculateTokenPurchase(self.base.hasContributed[msg.sender], _fullBonusPrice);
+    uint256 _leftoverBonus = _fullBonus - numTokens;
+    self.base.token.burnToken(_leftoverBonus);
+&nbsp;
+    self.base.hasContributed[msg.sender] = 0;
+&nbsp;
+    // send tokens and leftoverWei to the address calling the function
+    self.base.withdrawTokens();
+&nbsp;
+    self.base.withdrawLeftoverWei();
+&nbsp;
+  }
+&nbsp;
+&nbsp;
+&nbsp;
+   /*Functions "inherited" from CrowdsaleLib library*/
+&nbsp;
+  function withdrawLeftoverWei(InteractiveCrowdsaleStorage storage self) internal returns (bool) {
+&nbsp;
+    return self.base.withdrawLeftoverWei();
+  }
+&nbsp;
+  function withdrawOwnerEth(InteractiveCrowdsaleStorage storage self) internal returns (bool) {
+&nbsp;
+    return self.base.withdrawOwnerEth();
+  }
+&nbsp;
+  function crowdsaleActive(InteractiveCrowdsaleStorage storage self) internal view returns (bool) {
+    return self.base.crowdsaleActive();
+  }
+&nbsp;
+  function crowdsaleEnded(InteractiveCrowdsaleStorage storage self) internal view returns (bool) {
+    return self.base.crowdsaleEnded();
+  }
+&nbsp;
+  function getPersonalCap(InteractiveCrowdsaleStorage storage self, address _bidder) internal view returns (uint256) {
+    return self.personalCaps[_bidder];
+  }
+&nbsp;
+  function getTokensSold(InteractiveCrowdsaleStorage storage self) internal view returns (uint256) {
+    return self.base.getTokensSold();
+  }
+&nbsp;
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Feb 25 2018 21:56:55 GMT-0500 (EST)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

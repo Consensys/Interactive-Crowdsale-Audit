@@ -1,0 +1,58 @@
+
+contracts/Array256Lib.sol
+    1:17  warning  Compiler version must be fixed                                     compiler-fixed
+   35:42  warning  Variable "self" is unused                                          no-unused-vars
+   36:5   error    Avoid to use inline assembly. It is acceptable only in rare cases  no-inline-assembly
+   48:37  warning  Variable "self" is unused                                          no-unused-vars
+   49:5   error    Avoid to use inline assembly. It is acceptable only in rare cases  no-inline-assembly
+   65:37  warning  Variable "self" is unused                                          no-unused-vars
+   66:5   error    Avoid to use inline assembly. It is acceptable only in rare cases  no-inline-assembly
+   85:38  warning  Variable "self" is unused                                          no-unused-vars
+   89:5   error    Avoid to use inline assembly. It is acceptable only in rare cases  no-inline-assembly
+   96:13  warning  Code contains empty block                                          no-empty-blocks
+   96:39  warning  Code contains empty block                                          no-empty-blocks
+  147:3   warning  Function has cyclomatic complexity 12 but allowed no more than 7   code-complexity
+
+contracts/BasicMathLib.sol
+   1:17  warning  Compiler version must be fixed                                     compiler-fixed
+  39:5   error    Avoid to use inline assembly. It is acceptable only in rare cases  no-inline-assembly
+  57:5   error    Avoid to use inline assembly. It is acceptable only in rare cases  no-inline-assembly
+  79:5   error    Avoid to use inline assembly. It is acceptable only in rare cases  no-inline-assembly
+  96:5   error    Avoid to use inline assembly. It is acceptable only in rare cases  no-inline-assembly
+
+contracts/CrowdsaleLib.sol
+  1:17  warning  Compiler version must be fixed  compiler-fixed
+
+contracts/CrowdsaleToken.sol
+   1:17  warning  Compiler version must be fixed              compiler-fixed
+  82:3   error    Event and function names must be different  no-simple-event-func-name
+
+contracts/InteractiveCrowdsaleLib.sol
+    1:17  warning  Compiler version must be fixed                                    compiler-fixed
+   43:3   error    Explicitly mark visibility of state                               state-visibility
+   44:3   error    Explicitly mark visibility of state                               state-visibility
+   45:3   error    Explicitly mark visibility of state                               state-visibility
+   46:3   error    Explicitly mark visibility of state                               state-visibility
+  246:3   warning  Function has cyclomatic complexity 11 but allowed no more than 7  code-complexity
+  360:3   warning  Function has cyclomatic complexity 11 but allowed no more than 7  code-complexity
+
+contracts/InteractiveCrowdsaleTestContract.sol
+   1:17  warning  Compiler version must be fixed       compiler-fixed
+  15:3   error    Explicitly mark visibility of state  state-visibility
+
+contracts/LinkedListLib.sol
+   1:17  warning  Compiler version must be fixed       compiler-fixed
+  40:5   error    Explicitly mark visibility of state  state-visibility
+  41:5   error    Explicitly mark visibility of state  state-visibility
+  42:5   error    Explicitly mark visibility of state  state-visibility
+  43:5   error    Explicitly mark visibility of state  state-visibility
+
+contracts/Migrations.sol
+  1:17  warning  Compiler version must be fixed  compiler-fixed
+
+contracts/TokenLib.sol
+   1:17  warning  Compiler version must be fixed              compiler-fixed
+  90:3   error    Event and function names must be different  no-simple-event-func-name
+
+✖ 37 problems (19 errors, 18 warnings)
+

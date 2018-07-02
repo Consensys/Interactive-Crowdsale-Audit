@@ -1,0 +1,265 @@
+Analysis result for InteractiveCrowdsaleTestContract: No issues found.
+Analysis result for CrowdsaleToken: No issues found.
+Analysis result for CrowdsaleLib:
+==== CALL with gas to dynamic address ====
+Type: Warning
+Contract: CrowdsaleLib
+Function name: _function_0x3617dbba
+PC address: 1237
+The function _function_0x3617dbba contains a function call to an address provided as a function argument. The available gas is forwarded to the called contract. Make sure that the logic of the calling contract is not adversely affected if the called contract misbehaves (e.g. reentrancy).
+--------------------
+Affected code:
+
+self.token.balanceOf(this)
+--------------------
+
+==== CALL with gas to dynamic address ====
+Type: Warning
+Contract: CrowdsaleLib
+Function name: _function_0xb5d88163
+PC address: 2732
+The function _function_0xb5d88163 contains a function call to an address provided as a function argument. The available gas is forwarded to the called contract. Make sure that the logic of the calling contract is not adversely affected if the called contract misbehaves (e.g. reentrancy).
+--------------------
+Affected code:
+
+self.token.transfer(msg.sender, total)
+--------------------
+
+==== CALL with gas to dynamic address ====
+Type: Warning
+Contract: CrowdsaleLib
+Function name: _function_0xb5d88163
+PC address: 2343
+The function _function_0xb5d88163 contains a function call to an address provided as a function argument. The available gas is forwarded to the called contract. Make sure that the logic of the calling contract is not adversely affected if the called contract misbehaves (e.g. reentrancy).
+--------------------
+Affected code:
+
+self.token.burnToken(_burnAmount)
+--------------------
+
+==== CALL with gas to dynamic address ====
+Type: Warning
+Contract: CrowdsaleLib
+Function name: _function_0xd34e3274
+PC address: 3614
+The function _function_0xd34e3274 contains a function call to an address provided as a function argument. The available gas is forwarded to the called contract. Make sure that the logic of the calling contract is not adversely affected if the called contract misbehaves (e.g. reentrancy).
+--------------------
+Affected code:
+
+self.token.balanceOf(this)
+--------------------
+
+==== Integer Underflow ====
+Type: Warning
+Contract: CrowdsaleLib
+Function name: _function_0x19c5f76b
+PC address: 880
+A possible integer underflow exists in the function _function_0x19c5f76b.
+The SUB instruction at address 880 may result in a value < 0.
+--------------------
+Affected code:
+
+self.startingTokenBalance - self.withdrawTokensMap[self.owner]
+--------------------
+++++ Debugging info ++++
+(storage_5 + calldata_CrowdsaleLib_4) - (storage_keccac_1461501637330902918203684832716283019655932542975_&
+1461501637330902918203684832716283019655932542975_&
+1461501637330902918203684832716283019655932542975_&
+UDiv(storage_0_+_calldata_CrowdsaleLib_4,_256)).]
+
+==== Weak random ====
+Type: Warning
+Contract: CrowdsaleLib
+Function name: _function_0xd34e3274
+PC address: 4016
+In the function '_function_0xd34e3274' the following predictable state variables are used to determine Ether recipient:
+- block.timestamp
+- block.timestamp
+
+--------------------
+Affected code:
+
+self.owner.transfer(amount)
+--------------------
+
+
+Analysis result for LinkedListLib: No issues found.
+Analysis result for InteractiveCrowdsaleLib:
+==== Integer Underflow ====
+Type: Warning
+Contract: InteractiveCrowdsaleLib
+Function name: _function_0x95d89b41
+PC address: 1408
+A possible integer underflow exists in the function _function_0x95d89b41.
+The SUB instruction at address 1408 may result in a value < 0.
+--------------------
+Affected code:
+
+self.numBidsAtValuation[self.personalCaps[msg.sender]] -= 1
+--------------------
+++++ Debugging info ++++
+(storage_keccac_storage_keccac_1461501637330902918203684832716283019655932542975_&
+1461501637330902918203684832716283019655932542975_&
+caller -
+UDiv(UDiv(100*
+          (storage_22 + calldata_InteractiveCrowdsaleLib_4 -
+           timestamp),
+          storage_22 + calldata_InteractiveCrowdsaleLib_4 -
+          storage_2 + 0 + calldata_InteractiveCrowdsaleLib_4)*
+     storage_keccac_1461501637330902918203684832716283019655932542975_&
+1461501637330902918203684832716283019655932542975_&
+caller,
+     100)) - (1).]
+
+==== Integer Underflow ====
+Type: Warning
+Contract: InteractiveCrowdsaleLib
+Function name: _function_0x95d89b41
+PC address: 1492
+A possible integer underflow exists in the function _function_0x95d89b41.
+The SUB instruction at address 1492 may result in a value < 0.
+--------------------
+Affected code:
+
+self.pricePurchasedAt[msg.sender] - self.base.tokensPerEth
+--------------------
+++++ Debugging info ++++
+(storage_keccac_1461501637330902918203684832716283019655932542975_&
+1461501637330902918203684832716283019655932542975_&
+caller) - (storage_1 + 0 + calldata_InteractiveCrowdsaleLib_4).]
+
+==== Integer Underflow ====
+Type: Warning
+Contract: InteractiveCrowdsaleLib
+Function name: _function_0x95d89b41
+PC address: 1105
+A possible integer underflow exists in the function _function_0x95d89b41.
+The SUB instruction at address 1105 may result in a value < 0.
+--------------------
+Affected code:
+
+self.endWithdrawalTime - self.base.startTime
+--------------------
+++++ Debugging info ++++
+(storage_22 + calldata_InteractiveCrowdsaleLib_4) - (storage_2 + 0 + calldata_InteractiveCrowdsaleLib_4).]
+
+==== Integer Underflow ====
+Type: Warning
+Contract: InteractiveCrowdsaleLib
+Function name: _function_0x7b47ec1a
+PC address: 1980
+A possible integer underflow exists in the function _function_0x7b47ec1a.
+The SUB instruction at address 1980 may result in a value < 0.
+--------------------
+Affected code:
+
+self.valueCommitted - refundWei
+--------------------
+++++ Debugging info ++++
+(storage_24 + 156) - (storage_keccac_1461501637330902918203684832716283019655932542975_&
+1461501637330902918203684832716283019655932542975_&
+caller).]
+
+==== Integer Underflow ====
+Type: Warning
+Contract: InteractiveCrowdsaleLib
+Function name: _function_0x7b47ec1a
+PC address: 1887
+A possible integer underflow exists in the function _function_0x7b47ec1a.
+The SUB instruction at address 1887 may result in a value < 0.
+--------------------
+Affected code:
+
+self.base.hasContributed[msg.sender] -= refundWei
+--------------------
+++++ Debugging info ++++
+(storage_keccac_1461501637330902918203684832716283019655932542975_&
+1461501637330902918203684832716283019655932542975_&
+caller +
+storage_keccac_1461501637330902918203684832716283019655932542975_&
+1461501637330902918203684832716283019655932542975_&
+caller) - (storage_keccac_1461501637330902918203684832716283019655932542975_&
+1461501637330902918203684832716283019655932542975_&
+caller).]
+
+
+Analysis result for Array256Lib:
+==== Integer Underflow ====
+Type: Warning
+Contract: Array256Lib
+Function name: _function_0x303773f0
+PC address: 1973
+A possible integer underflow exists in the function _function_0x303773f0.
+The SUB instruction at address 1973 may result in a value < 0.
+--------------------
+Affected code:
+
+index - 1
+--------------------
+++++ Debugging info ++++
+(storage_calldata_Array256Lib_4 - 1) - (1).]
+
+==== Integer Underflow ====
+Type: Warning
+Contract: Array256Lib
+Function name: _function_0x303773f0
+PC address: 682
+A possible integer underflow exists in the function _function_0x303773f0.
+The SUB instruction at address 682 may result in a value < 0.
+--------------------
+Affected code:
+
+self.length - 1
+--------------------
+++++ Debugging info ++++
+(storage_calldata_Array256Lib_4) - (1).]
+
+==== Integer Underflow ====
+Type: Warning
+Contract: Array256Lib
+Function name: _function_0x66c19bcd
+PC address: 1558
+A possible integer underflow exists in the function _function_0x66c19bcd.
+The SUB instruction at address 1558 may result in a value < 0.
+--------------------
+Affected code:
+
+sub
+--------------------
+++++ Debugging info ++++
+(storage_calldata_Array256Lib_4) - (1).]
+
+
+Analysis result for BasicMathLib:
+==== Integer Underflow ====
+Type: Warning
+Contract: BasicMathLib
+Function name: _function_0x66098d4f
+PC address: 424
+A possible integer underflow exists in the function _function_0x66098d4f.
+The SUB instruction at address 424 may result in a value < 0.
+--------------------
+Affected code:
+
+ Math lib
+--------------------
+++++ Debugging info ++++
+(calldata_BasicMathLib_4 + calldata_BasicMathLib_32 + 4) - (calldata_BasicMathLib_32 + 4).]
+
+==== Integer Underflow ====
+Type: Warning
+Contract: BasicMathLib
+Function name: _function_0xf4f3bdc1
+PC address: 522
+A possible integer underflow exists in the function _function_0xf4f3bdc1.
+The SUB instruction at address 522 may result in a value < 0.
+--------------------
+Affected code:
+
+sub
+--------------------
+++++ Debugging info ++++
+(calldata_BasicMathLib_4) - (calldata_BasicMathLib_32 + 4).]
+
+
+Analysis result for TokenLib: No issues found.
