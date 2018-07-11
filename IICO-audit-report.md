@@ -65,7 +65,7 @@ ________________
 * **Project Name:** Interactive Crowdsale Audit
 * **Client Name:** Modular 
 * **Client Contact:** Christopher Brown, Joshua Hannan
-* **Auditors:** Gerhard Wagner, Jon Maurelian
+* **Auditors:** Gerhard Wagner, John Mardlin
 * **GitHub :** https://github.com/Modular-Network/ethereum-libraries/tree/master/CrowdsaleLib/IICOLib
 * **Languages:** Solidity, Solidity Assembly
 * **Date:** 9th February - 9th of March 2018
