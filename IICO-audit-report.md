@@ -40,7 +40,7 @@
   * [A.1.2 - Medium](#a12---medium)
   * [A.1.3 - Major](#a13---major)
   * [A.1.4 - Critical](#a14---critical)
-* [Appendix 2 - Disclaimer](#appendix-2---disclaimer)
+* [Appendix 2 - Disclosure](#appendix-2---disclosure)
 
 <!-- /MarkdownTOC -->
 
